@@ -33,17 +33,21 @@ class GameFinishedFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.buttonRetry.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     private fun parseArgs(){
-        gameResult = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getSerializable(KEY_GAME_RESULT, GameResult::class.java)
-        } else {
-            requireArguments().getSerializable(KEY_GAME_RESULT) as? GameResult
-        } ?: throw RuntimeException("Level is null")
+        requireArguments().getParcelable(KEY_GAME_RESULT, GameResult::class.java)?.let { gameResult = it }
     }
 
     companion object{
@@ -53,7 +57,7 @@ class GameFinishedFragment : Fragment() {
         fun newInstance(gameResult: GameResult) : GameFinishedFragment{
             return GameFinishedFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(KEY_GAME_RESULT, gameResult)
+                    putParcelable(KEY_GAME_RESULT, gameResult)
                 }
             }
         }
