@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import com.example.composition.R
 import com.example.composition.databinding.FragmentGameBinding
 import com.example.composition.domain.entity.GameResult
@@ -38,11 +37,11 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.tvOption3.setOnClickListener{
-            launchGameFragment(GameResult(true, 35,35, GameSettings(20,20,20,20)))
+            launchGameFinishedFragment(GameResult(true, 35,35, GameSettings(20,20,20,20)))
         }
     }
 
-    private fun launchGameFragment(gameResult: GameResult){
+    private fun launchGameFinishedFragment(gameResult: GameResult){
         requireActivity().supportFragmentManager.popBackStack()
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, GameFinishedFragment.newInstance(gameResult))
@@ -56,11 +55,7 @@ class GameFragment : Fragment() {
     }
 
     private fun parseArgs(){
-        level = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getSerializable(KEY_LEVEL, Level::class.java)
-        } else {
-            requireArguments().getSerializable(KEY_LEVEL) as? Level
-        } ?: throw RuntimeException("Level is null")
+        requireArguments().getParcelable(KEY_LEVEL, Level::class.java)?.let { level = it }
     }
 
     companion object{
@@ -69,7 +64,7 @@ class GameFragment : Fragment() {
         fun newInstance(level: Level): GameFragment {
             return GameFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(KEY_LEVEL, level)
+                    putParcelable(KEY_LEVEL, level)
                 }
             }
         }
