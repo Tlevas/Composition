@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -67,7 +68,7 @@
         android:layout_height="wrap_content"
         android:text="@string/progress_answers"
         android:layout_margin="24dp"
-
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/tv_left_number"
         app:layout_constraintBottom_toTopOf="@id/progressBar"
         app:layout_constraintStart_toStartOf="parent"
